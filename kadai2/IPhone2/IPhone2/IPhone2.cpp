@@ -1,5 +1,5 @@
 /*---------------------------------------------
-Iphone7plus.cpp
+Iphone2.cpp
 -----------------------------------------------*/
 
 
@@ -14,13 +14,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 
 // 大域変数 
-static TCHAR szWindowClass[] = _T("iPhone7Plus");
-static TCHAR szTitle[] = _T("iPhone7Plus");
+static TCHAR szWindowClass[] = _T("iPhone2");
+static TCHAR szTitle[] = _T("iPhone2");
 HINSTANCE	hInst;
 
 
 int window_pos_x = 100;
-int window_pos_y = 100;
+int window_pos_y = 20;
 int window_width = 350;
 int window_height = 690;
 
@@ -43,7 +43,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	wcex.hInstance = hInstance;							// インスタンスハンドル 
 	wcex.hIcon = (HICON)LoadImage(					// アイコン 
 		NULL,
-		MAKEINTRESOURCE(IDI_APPLICATION),
+		IDI_APPLICATION,
 		IMAGE_ICON,
 		0,
 		0,
@@ -54,7 +54,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
 	wcex.lpszMenuName = NULL;							// メニュー名 
 	wcex.lpszClassName = szWindowClass;
-	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_APPLICATION));
+	wcex.hIconSm = LoadIcon(wcex.hInstance, IDI_APPLICATION);
 
 
 	// ウィンドウクラスを登録する 
@@ -132,7 +132,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	case WM_CREATE:
 		ZeroMemory(&logfont, sizeof(logfont));	// フォント情報構造体を０で初期化 
 		logfont.lfCharSet = DEFAULT_CHARSET;	// システムのデフォルト文字セットを使う 
-		wsprintf(logfont.lfFaceName, _T("Times New Roman"));
+		wsprintf(logfont.lfFaceName, _T("Lucida Handwriting")); //フォントを指定
 		break;
 
 	case WM_PAINT: {
@@ -142,51 +142,47 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 
 		hBrushBlack = CreateSolidBrush(RGB(0, 0, 0));
 		SelectObject(hDC, hBrushBlack);
-		RoundRect(hDC, 10, 10, 322, 643, 70, 80);  //iPhone7の外枠
-		Rectangle(hDC, 321, 120, 325, 170);  //iPhone7の電顕ボタン
+		RoundRect(hDC, 10, 10, 322, 643, 70, 80);  //iPhoneの外枠
+		Rectangle(hDC, 321, 120, 325, 170);  //iPhoneの電顕ボタン
 
 		hBrushWhite = CreateSolidBrush(RGB(255, 255, 255));
 		SelectObject(hDC, hBrushWhite);
-		Ellipse(hDC, 139, 579, 193, 633);  //iPhone7の中央ボタン外枠
+		Ellipse(hDC, 139, 579, 193, 633);  //iPhoneの中央ボタン外枠
 
 		hBrushYellow = CreateSolidBrush(RGB(255, 255, 0));
 		SelectObject(hDC, hBrushYellow);
-		Rectangle(hDC, 29, 83, 303, 569);  //iPhone7の画面表示
+		Rectangle(hDC, 29, 83, 303, 569);  //iPhoneの画面表示
 
 		hBrushBlack = CreateSolidBrush(RGB(0, 0, 0));
 		SelectObject(hDC, hBrushBlack);
-		Ellipse(hDC, 144, 584, 188, 628);  ////iPhone7の中央ボタンの内枠
+		Ellipse(hDC, 144, 584, 188, 628);  //iPhoneの中央ボタンの内枠
 
 
-										   //****  螺旋を描く **** 
-		double x0 = 170;//中心
-		double y0 = 310;
+		/****  螺旋を描く ****/ 
+		double x0 = 170;//中心のx座標
+		double y0 = 310;//中心のy座標
 		double x1, y1;//変数
 		double a1 = 1.1;//座標の変化量
-		double g = 0.6;
+		double g = 0.6;//文字サイズの変化量
 
 		int i = 1;
 		MoveToEx(hDC, x0, y0, NULL);     //開始点に移動 
-		for (double theta = 40.2; theta < 90; theta += 0.1) {
+		for (double theta = 40.2; theta < 90; theta += 0.2) {
 
 			while (angle >= 0) {
 				hFont = CreateFontIndirect(&logfont);
 
 				SelectObject(hDC, hFont);
 
-				logfont.lfHeight = theta*g - 10;   //文字の大きさを指定 
-				if (logfont.lfHeight > 20) g = 0.7;//変化させる大きさ
-				if (logfont.lfHeight > 25) g = 0.73;
-				if (logfont.lfHeight > 30) g = 0.75;
-				if (logfont.lfHeight > 35) g = 0.77;
-				if (logfont.lfHeight > 40) g = 0.8;
+				logfont.lfHeight = theta*g -5;   //文字の大きさを指定 
+				g *= 1.01;
 
 
 				x1 = pow(a1, theta)*cos(theta) + x0;       //x座標を設定 
 				y1 = pow(a1, theta)*sin(theta) + y0;       //y座標を設定 
 
 
-														   //**** 2点から角度を求める **** 
+				/**** 2点から角度を求める ****/
 				double dx = x0 - x1;
 				double dy = y0 - y1;
 				double radian = atan2(dx, dy);
