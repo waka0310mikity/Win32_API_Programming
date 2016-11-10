@@ -91,6 +91,42 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	static HWND		hChdWnd;
 	HINSTANCE		hInst;
 	enum { right, left };
+	HDC hDC;
+	HBRUSH  hBrushBlack;
+	HBRUSH  hBrushYellow;
+	HBRUSH  hBrushWhite;
+	PAINTSTRUCT	ps;
+
+	switch (message) {
+	case WM_PAINT: {
+
+
+		hDC = BeginPaint(hWnd, &ps);		// GDI関数による描画を開始する 
+
+		hBrushBlack = CreateSolidBrush(RGB(255, 255, 255));
+		SelectObject(hDC, hBrushBlack);
+		RoundRect(hDC, 10, 10, 643, 322, 80, 70);  //iPhoneの外枠
+		Rectangle(hDC, 120, 6, 170, 10);  //iPhoneの電顕ボタン
+		Rectangle(hDC, 85, 321, 110, 325);               //マナーモードON/OFFキー
+		Rectangle(hDC, 135, 321, 185, 325);               //音量＋ボタン
+		Rectangle(hDC, 200, 321, 250, 325);               //音量－ボタン
+
+		hBrushWhite = CreateSolidBrush(RGB(0, 0, 0));
+		SelectObject(hDC, hBrushWhite);
+		Ellipse(hDC, 25, 162, 33, 170);              //中央上部の丸
+		Ellipse(hDC, 35, 221, 50, 236);              //中央上部下の丸
+		RoundRect(hDC, 39, 100, 46, 207, 80, 10);
+		Ellipse(hDC, 579, 139, 633, 193);  //iPhoneの中央ボタン外枠
+
+		hBrushYellow = CreateSolidBrush(RGB(255, 255, 0));
+		SelectObject(hDC, hBrushYellow);
+		Rectangle(hDC, 83, 29, 569, 303);  //iPhoneの画面表示
+
+		hBrushBlack = CreateSolidBrush(RGB(255, 255, 255));
+		SelectObject(hDC, hBrushBlack);
+		Ellipse(hDC, 584, 144, 628, 188);  //iPhoneの中央ボタンの内枠
+	}
+	}
 
 	switch (message) {
 	case WM_CREATE:
@@ -153,16 +189,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 }
 
 
+
+
+
+
 LRESULT CALLBACK ChdProc(HWND hChdWnd, UINT message, WPARAM wParam, LPARAM lParam) {
-	static HBITMAP	hBitmap;
-	static HBITMAP	hPrevBitmap;
-	HINSTANCE		hInst;
-	PAINTSTRUCT	ps;
-	HDC			hDC;
-	HDC			hCompatDC;
+		HDC hDC;
+		static HBITMAP	hBitmap;
+		static HBITMAP	hPrevBitmap;
+		HINSTANCE		hInst;
+		PAINTSTRUCT	ps;
+		HDC			hCompatDC;
 
 	switch (message) {
-	case WM_PAINT:
+
+	case WM_PAINT: {
 		hInst = (HINSTANCE)GetWindowLong(hChdWnd, GWL_HINSTANCE);
 
 		hBitmap = (HBITMAP)LoadImage(
@@ -197,5 +238,6 @@ LRESULT CALLBACK ChdProc(HWND hChdWnd, UINT message, WPARAM wParam, LPARAM lPara
 	default:
 		return(DefWindowProc(hChdWnd, message, wParam, lParam));
 	}
-	return 0;
+				   return 0;
+	}
 }
