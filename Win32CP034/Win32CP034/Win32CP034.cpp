@@ -85,17 +85,19 @@ BOOL InitInstance(HINSTANCE hInst, int nCmdShow, LPCTSTR szClassName) {
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	RECT		rc;
-	static int 	x;
-	static int 	y;
+	static int 	x = 213;
+	static int 	y = 29;
 	static int 	direction;
 	static HWND		hChdWnd;
 	HINSTANCE		hInst;
-	enum { right, left };
+	enum { one, two, three, four };
 	HDC hDC;
 	HBRUSH  hBrushBlack;
 	HBRUSH  hBrushYellow;
 	HBRUSH  hBrushWhite;
 	PAINTSTRUCT	ps;
+
+
 
 	switch (message) {
 	case WM_PAINT: {
@@ -118,7 +120,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		RoundRect(hDC, 39, 100, 46, 207, 80, 10);
 		Ellipse(hDC, 579, 139, 633, 193);  //iPhoneの中央ボタン外枠
 
-		hBrushYellow = CreateSolidBrush(RGB(255, 255, 0));
+		hBrushYellow = CreateSolidBrush(RGB(0, 0, 0));
 		SelectObject(hDC, hBrushYellow);
 		Rectangle(hDC, 83, 29, 569, 303);  //iPhoneの画面表示
 
@@ -156,23 +158,35 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 	case WM_TIMER:
 		GetClientRect(hWnd, &rc);
 		MoveWindow(hChdWnd, x, y, CHD_WIDTH, CHD_HEIGHT, TRUE);
-
+		 
 		switch (direction) {
-		case right:
-			x += 10;
+		case one:
+			x += 7;
 			y += 2;
 			if (x >= 569 - CHD_WIDTH)
-				direction = left;
+				direction = two;
 			break;
 
-		case left:
-			x -= 10;
-			y -= 2;
-			if (y <= 29)
-				direction = right;
+		case two:
+			x -= 5;
+			y += 3;
+			if (y >= 303 - CHD_HEIGHT)
+				direction = three;
 			break;
 
+		case three:
+			x -= 5;
+			y -= 3;
+			if (x <= 83)
+				direction = four;
+			break;
 		 
+		case four:
+			x += 5;
+			y -= 3;
+			if (y <= 29)
+				direction = one;
+			break;
 		}
 		break;
 
