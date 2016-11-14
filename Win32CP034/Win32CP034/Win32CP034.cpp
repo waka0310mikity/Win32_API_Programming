@@ -7,8 +7,8 @@ Win32CP034.cpp		 Discoveryを動かす
 
 #define	ID_MYTIMER	(32767)
 #define	ID_MYCHILD	(100)
-#define	CHD_WIDTH	(300)
-#define	CHD_HEIGHT	(150)
+#define	CHD_WIDTH	(100)
+#define	CHD_HEIGHT	(60)
 
 // プロトタイプ宣言
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -64,10 +64,10 @@ BOOL InitInstance(HINSTANCE hInst, int nCmdShow, LPCTSTR szClassName) {
 		szClassName,
 		szTitle,						//タイトルバーにこの名前が表示されます
 		WS_OVERLAPPEDWINDOW,	//ウィンドウの種類
-		CW_USEDEFAULT,			//Ｘ座標　適宜指定する
-		CW_USEDEFAULT,			//Ｙ座標　適宜指定する
-		CW_USEDEFAULT,			//幅	　適宜指定する
-		CW_USEDEFAULT,			//高さ	　適宜指定する
+		10,			//Ｘ座標　適宜指定する
+		10,			//Ｙ座標　適宜指定する
+		700,			//幅	　適宜指定する
+		400,			//高さ	　適宜指定する
 		NULL,						//親ウィンドウのハンドル、親を作るときはNULL
 		NULL,			//メニューハンドル、クラスメニューを使うときはNULL
 		hInst,			//インスタンスハンドル
@@ -137,8 +137,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 			szchClassName,			// ウィンドウクラス名
 			NULL,					// タイトルバーに表示する文字列
 			WS_CHILD,				// ウィンドウの種類
-			0,						// ウィンドウを表示する位置(X座標）
-			0,						// ウィンドウを表示する位置(Y座標）
+			83,						// ウィンドウを表示する位置(X座標）
+			29,						// ウィンドウを表示する位置(Y座標）
 			CHD_WIDTH,			// ウィンドウの幅
 			CHD_HEIGHT,			// ウィンドウの高さ
 			hWnd,					// 親ウィンドウのウィンドウハンドル
@@ -161,18 +161,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		case right:
 			x += 10;
 			y += 2;
-			if (x >= rc.right - CHD_WIDTH) {
+			if (x >= 569 - CHD_WIDTH)
 				direction = left;
-			}
-
 			break;
 
 		case left:
 			x -= 10;
 			y -= 2;
-			if (x < 0)
+			if (y <= 29)
 				direction = right;
 			break;
+
+		 
 		}
 		break;
 
@@ -208,7 +208,7 @@ LRESULT CALLBACK ChdProc(HWND hChdWnd, UINT message, WPARAM wParam, LPARAM lPara
 
 		hBitmap = (HBITMAP)LoadImage(
 			hInst,
-			_T("Discovery.bmp"),
+			_T("Discovery2.bmp"),
 			IMAGE_BITMAP,
 			0,
 			0,
