@@ -8,8 +8,8 @@
 
 #define WINDOW_X			(10)
 #define WINDOW_Y			(10)
-#define WINDOW_WIDTH		(432)		// ウィンドウの幅
-#define WINDOW_HEIGHT		(913)		// ウィンドウの高さ
+#define WINDOW_WIDTH		(400)		// ウィンドウの幅
+#define WINDOW_HEIGHT		(700)		// ウィンドウの高さ
 
 // プロトタイプ宣言
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -97,33 +97,12 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		return (int)msg.wParam;
 }
 
-
-
-
-// ウィンドウプロシージャ
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
-	switch(message) {
-	case WM_CREATE:
-		FView_hWnd = CreateDialog(
-			GetModuleHandle(NULL),
-			MAKEINTRESOURCE(IDD_FORMVIEW),
-			hWnd, 
-			(DLGPROC)DlgProc);
-		ShowWindow(FView_hWnd, SW_SHOW);
-		break;
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		break;
-	}
-	return DefWindowProc(hWnd, message, wParam, lParam);
-}
-
 HBITMAP hBmp;
-HBRUSH bkColorBrush=CreateSolidBrush(RGB(0,0,0));//背景色のブラシを用意する
+HBRUSH bkColorBrush = CreateSolidBrush(RGB(255, 255, 255));//背景色のブラシを用意する
 
 LRESULT CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	switch(message){
+	switch (message) {
 	case WM_PAINT:
 		hBmp = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP1));
 		SendDlgItemMessage(hWnd, IDC_BUTTON1, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBmp);
@@ -160,11 +139,11 @@ LRESULT CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		hBmp = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_BITMAP17));
 		SendDlgItemMessage(hWnd, IDC_BUTTON17, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBmp);
 		break;
-	case WM_CTLCOLORDLG://ダイアログの背景色
-		return (LRESULT)bkColorBrush;
-		break;
+//	case WM_CTLCOLORDLG://ダイアログの背景色
+//		return (LRESULT)bkColorBrush;
+//		break;
 	case WM_COMMAND:		// ダイアログボックス内の何かが選択されたとき
-		switch(LOWORD(wParam)) {
+		switch (LOWORD(wParam)) {
 		case IDC_BUTTON1:
 			MessageBox(NULL, _T("Safariが押されました．"), _T("メッセージ"), MB_OK);
 			break;
@@ -214,7 +193,7 @@ LRESULT CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			MessageBox(NULL, _T("天気が押されました．"), _T("メッセージ"), MB_OK);
 			break;
 		case IDC_BUTTON17:
-			MessageBox(NULL, _T("ホームボタンが押されました．"), _T("メッセージ"), MB_OK);
+			PostQuitMessage(0);
 			break;
 		}
 	default:
@@ -222,3 +201,55 @@ LRESULT CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 	return 0;
 }
+
+
+
+// ウィンドウプロシージャ
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+	HDC hDC;
+	HBRUSH  hBrushBlack;
+	HBRUSH  hBrushYellow;
+	HBRUSH  hBrushWhite;
+	PAINTSTRUCT	ps;
+	switch(message) {
+	case WM_CREATE:
+		FView_hWnd = CreateDialog(
+			GetModuleHandle(NULL),
+			MAKEINTRESOURCE(IDD_FORMVIEW),
+			hWnd,
+			(DLGPROC)DlgProc);
+		ShowWindow(FView_hWnd, SW_SHOW);
+		break;
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		break;
+
+	case WM_PAINT: {
+
+
+		hDC = BeginPaint(hWnd, &ps);		// GDI関数による描画を開始する 
+
+		hBrushBlack = CreateSolidBrush(RGB(0, 0, 0));
+		SelectObject(hDC, hBrushBlack);
+		RoundRect(hDC, 10, 10, 322, 643, 70, 80);  //iPhoneの外枠
+		Rectangle(hDC, 321, 120, 325, 170);  //iPhoneの電顕ボタン
+
+		hBrushWhite = CreateSolidBrush(RGB(255, 255, 255));
+		SelectObject(hDC, hBrushWhite);
+		Rectangle(hDC, 29, 83, 303, 569);  //iPhoneの画面表示
+		Ellipse(hDC, 139, 579, 193, 633);  //iPhoneの中央ボタン外枠
+
+		hBrushYellow = CreateSolidBrush(RGB(255, 255, 0));
+		SelectObject(hDC, hBrushYellow);
+		Rectangle(hDC, 29, 83, 303, 569);  //iPhoneの画面表示
+
+		hBrushBlack = CreateSolidBrush(RGB(0, 0, 0));
+		SelectObject(hDC, hBrushBlack);
+		Ellipse(hDC, 144, 584, 188, 628);  //iPhoneの中央ボタンの内枠
+	}
+
+	}
+	return DefWindowProc(hWnd, message, wParam, lParam);
+}
+
+
