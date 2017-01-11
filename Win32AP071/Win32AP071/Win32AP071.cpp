@@ -208,7 +208,6 @@ LRESULT CALLBACK DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	HDC hDC;
 	HBRUSH  hBrushBlack;
-	HBRUSH  hBrushYellow;
 	HBRUSH  hBrushWhite;
 	PAINTSTRUCT	ps;
 	switch(message) {
@@ -238,10 +237,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		SelectObject(hDC, hBrushWhite);
 		Rectangle(hDC, 29, 83, 303, 569);  //iPhoneの画面表示
 		Ellipse(hDC, 139, 579, 193, 633);  //iPhoneの中央ボタン外枠
-
-		hBrushYellow = CreateSolidBrush(RGB(255, 255, 0));
-		SelectObject(hDC, hBrushYellow);
-		Rectangle(hDC, 29, 83, 303, 569);  //iPhoneの画面表示
 
 		hBrushBlack = CreateSolidBrush(RGB(0, 0, 0));
 		SelectObject(hDC, hBrushBlack);
